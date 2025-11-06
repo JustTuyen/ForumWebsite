@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ForumWebsite.Data;
 using ForumWebsite.Models.Thread;
+using ForumWebsite.DTO.Thread;
 
 namespace ForumWebsite.Controllers.Thread
 {
-    public class StatusModelsController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class StatusModelsController : ControllerBase
     {
         private readonly MyDBContextApplication _context;
 
@@ -19,134 +22,93 @@ namespace ForumWebsite.Controllers.Thread
             _context = context;
         }
 
-        // GET: StatusModels
-        public async Task<IActionResult> Index()
+        // GET: api/StatusModels
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<StatusDTO>>> GetStatuses()
         {
-            return View(await _context.Statuses.ToListAsync());
+            return await _context.Statuses
+                .Select(s => new StatusDTO  
+                {
+                   ID = s.ID,
+                   StatusName = s.StatusName,
+                   About = s.About
+                }).ToListAsync();
         }
 
-        // GET: StatusModels/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/StatusModels/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<StatusDTO>> GetStatusModel(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var statusModel = await _context.Statuses.FindAsync(id);
 
-            var statusModel = await _context.Statuses
-                .FirstOrDefaultAsync(m => m.ID == id);
             if (statusModel == null)
             {
                 return NotFound();
             }
 
-            return View(statusModel);
-        }
-
-        // GET: StatusModels/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: StatusModels/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,StatusName,About")] StatusModel statusModel)
-        {
-            if (ModelState.IsValid)
+            return new StatusDTO
             {
-                _context.Add(statusModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(statusModel);
+                StatusName= statusModel.StatusName,
+                About = statusModel.About
+            };
         }
 
-        // GET: StatusModels/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // PUT: api/StatusModels/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutStatusModel(int id, StatusDTO dto)
         {
-            if (id == null)
+            if (id != dto.ID)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var statusModel = await _context.Statuses.FindAsync(id);
-            if (statusModel == null)
-            {
-                return NotFound();
-            }
-            return View(statusModel);
-        }
-
-        // POST: StatusModels/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,StatusName,About")] StatusModel statusModel)
-        {
-            if (id != statusModel.ID)
+            if(statusModel == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(statusModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StatusModelExists(statusModel.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(statusModel);
-        }
-
-        // GET: StatusModels/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var statusModel = await _context.Statuses
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (statusModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(statusModel);
-        }
-
-        // POST: StatusModels/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var statusModel = await _context.Statuses.FindAsync(id);
-            if (statusModel != null)
-            {
-                _context.Statuses.Remove(statusModel);
-            }
+            statusModel.StatusName = dto.StatusName;
+            statusModel.About = dto.About;
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return NoContent();
+        }
+
+        // POST: api/StatusModels
+        [HttpPost]
+        public async Task<ActionResult<StatusDTO>> PostStatusModel(StatusDTO dto)
+        {
+            var status = new StatusModel
+            {
+                StatusName = dto.StatusName,
+                About = dto.About
+            };
+            _context.Statuses.Add(status);
+            await _context.SaveChangesAsync();
+
+            dto.ID = status.ID;
+            return CreatedAtAction(nameof(GetStatuses),
+                new
+                {
+                    id = dto.ID,
+                }, dto);
+        }
+
+        // DELETE: api/StatusModels/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteStatusModel(int id)
+        {
+            var statusModel = await _context.Statuses.FindAsync(id);
+            if (statusModel == null)
+            {
+                return NotFound();
+            }
+
+            _context.Statuses.Remove(statusModel);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
         private bool StatusModelExists(int id)

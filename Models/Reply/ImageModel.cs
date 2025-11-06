@@ -8,9 +8,9 @@ namespace ForumWebsite.Models.Reply
     {
         [Key]
         public int ID { get; set; }
-        [Required]
+        [Required, MaxLength(1000)]
         public string URL { get; set; }
-        [Required]
+        [Required, MaxLength(1000)]
         public string PublicID {  get; set; }
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

@@ -14,7 +14,7 @@ namespace ForumWebsite.Models.Activity
         [Required]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-        [Required, MaxLength(255)]
+        [Required, MaxLength(1000)]
         public string Reason { get; set; }
 
         //fogein key

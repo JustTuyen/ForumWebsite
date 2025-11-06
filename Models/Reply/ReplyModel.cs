@@ -12,7 +12,7 @@ namespace ForumWebsite.Models.Reply
         [Required, MaxLength(1000)]
         public string Content { get; set; }
 
-        [Required, MaxLength(100)]
+        [Required, MaxLength(255)]
         public string Name { get; set; } = "Anonymous Melon";
         [Required]
         public int LikeCount { get; set; } = 0;

@@ -15,6 +15,10 @@ namespace ForumWebsite.Models.Thread
 
         [Required, MaxLength(255)]
         public string About {  get; set; }
+        [Required]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        [Required]
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         //forgein key
         public ICollection<ThreadModel> Threads { get; set; } = new List<ThreadModel>();

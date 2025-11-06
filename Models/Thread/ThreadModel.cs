@@ -10,10 +10,10 @@ namespace ForumWebsite.Models.Thread
         [Key]
         public int ID {  get; set; }
 
-        [Required,MaxLength(100)]
+        [Required,MaxLength(255)]
         public string Name { get; set; } = "Anonymous Melon";
 
-        [Required, MaxLength(500)]
+        [Required, MaxLength(1000)]
         public string Title { get; set; }
         [Required, MaxLength(1000)]
         public string Content {  get; set; }

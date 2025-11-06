@@ -11,6 +11,10 @@ namespace ForumWebsite.Models.Activity
         public int ID { get; set; }
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        [Required]
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        [MaxLength(1000)]
         public string? Remark {  get; set; }
 
         //forgein key
