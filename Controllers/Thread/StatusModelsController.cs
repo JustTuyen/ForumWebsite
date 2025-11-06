@@ -31,7 +31,9 @@ namespace ForumWebsite.Controllers.Thread
                 {
                    ID = s.ID,
                    StatusName = s.StatusName,
-                   About = s.About
+                   About = s.About,
+                   CreatedAt = s.CreatedAt,
+                   UpdatedAt = s.UpdatedAt,
                 }).ToListAsync();
         }
 
@@ -70,6 +72,8 @@ namespace ForumWebsite.Controllers.Thread
 
             statusModel.StatusName = dto.StatusName;
             statusModel.About = dto.About;
+            statusModel.CreatedAt = DateTime.UtcNow;
+            statusModel.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
             return NoContent();
@@ -82,7 +86,9 @@ namespace ForumWebsite.Controllers.Thread
             var status = new StatusModel
             {
                 StatusName = dto.StatusName,
-                About = dto.About
+                About = dto.About,
+                UpdatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow
             };
             _context.Statuses.Add(status);
             await _context.SaveChangesAsync();

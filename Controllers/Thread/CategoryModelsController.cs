@@ -31,7 +31,9 @@ namespace ForumWebsite.Controllers.Thread
              {
                  ID = s.ID,
                  Name = s.Name,
-                 Description = s.Description
+                 Description = s.Description,
+                 UpdatedAt = s.UpdatedAt,
+                 CreatedAt = s.CreatedAt
              }).ToListAsync();
         }
 
@@ -71,6 +73,8 @@ namespace ForumWebsite.Controllers.Thread
 
             category.Name = dto.Name;
             category.Description = dto.Description;
+            category.UpdatedAt = DateTime.UtcNow;
+            category.CreatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
             return NoContent();
@@ -83,7 +87,9 @@ namespace ForumWebsite.Controllers.Thread
         {
            var category = new CategoryModel { 
                Name = dto.Name,
-               Description = dto.Description
+               Description = dto.Description,
+               CreatedAt = DateTime.UtcNow,
+               UpdatedAt = DateTime.UtcNow,
            };
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
