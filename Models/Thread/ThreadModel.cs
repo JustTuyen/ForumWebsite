@@ -28,6 +28,8 @@ namespace ForumWebsite.Models.Thread
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         [Required]
         public DateTime UpdatedAt { get; set;} = DateTime.UtcNow;
+        [Required]
+        public DateTime ExpirationAt { get; set; }
 
         //Forgein keys
         //one

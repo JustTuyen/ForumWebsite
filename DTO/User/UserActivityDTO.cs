@@ -8,7 +8,7 @@ namespace ForumWebsite.DTO.User
         public string ActionType { get; set; }
         public string? IPAddress { get; set; }
         public string? UserAgent { get; set; }
-        public DateTime CreatedAt { get; set; }
+        //public DateTime CreatedAt { get; set; }
         public int? UserID { get; set; }
         public int? ThreadID { get; set; }
         public int? ReplyID { get; set; }

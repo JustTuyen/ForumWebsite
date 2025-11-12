@@ -1,18 +1,19 @@
-﻿namespace ForumWebsite.DTO.Reply
+﻿namespace ForumWebsite.DTO.Thread
 {
-    public class DisplayReplyDTO
+    public class ListingThreadDTO
     {
         public int ID { get; set; }
-        public string Content { get; set; }
         public string Name { get; set; }
+        public string Title { get; set; }
+        public int ViewCount { get; set; }
         public int LikeCount { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public DateTime ExpirationAt { get; set; }
         //
+        public int StatusID { get; set; }
         public int? ImageID { get; set; }
         public string? ImageUrl { get; set; }
-        public int? ParentReplyID { get; set; }
-        public string? ParentReplyName { get; set; }
-        public int StatusID { get; set; }
+        public int CategoryID { get; set; }
     }
 }

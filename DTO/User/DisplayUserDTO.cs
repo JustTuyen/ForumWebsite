@@ -8,7 +8,7 @@
         public string Email { get; set; }
         public string Role { get; set; }
         public int StatusID { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        //public DateTime CreatedAt { get; set; }
+        //public DateTime UpdatedAt { get; set; }
     }
 }

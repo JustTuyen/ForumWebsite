@@ -1,4 +1,5 @@
 using ForumWebsite.Data;
+using ForumWebsite.Services.CloudinaryHelper;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//CloudinaryService
+builder.Services.AddSingleton<CloudinaryService>();
 
 //DBcontext
 builder.Services.AddDbContext<MyDBContextApplication>(options =>
